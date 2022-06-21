@@ -1,27 +1,41 @@
 class dcProfile {
-  final String nama;
-  final String tinggi;
-  final String berat;
+  String? uid;
+  String? email;
+  String? nama;
+  String? berat;
+  String? tinggi;
+  String? password;
 
   dcProfile({
-    required this.nama,
-    required this.tinggi,
-    required this.berat
+    this.uid,
+    this.email,
+    this.nama,
+    this.berat,
+    this.tinggi,
+    this.password
   });
+
+  factory dcProfile.fromJson(json) {
+    return dcProfile(
+      uid: json['uid'],
+      email: json['email'],
+      nama: json['nama'],
+      berat: json['berat'],
+      tinggi: json['tinggi'],
+      password: json['password']
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {
-      "nama" : nama,
-      "tinggi" : tinggi,
-      "berat" : berat
+      "uid": uid,
+      "email": email,
+      "nama": nama,
+      "berat": berat,
+      "tinggi": tinggi,
+      "password": password
     };
   }
 
-  factory dcProfile.fromJson(Map<String, dynamic> json) {
-    return dcProfile(
-      nama : json['judul'],
-      tinggi : json['isi'],
-      berat : json['berat']
-    );
-  }
+  
 }
