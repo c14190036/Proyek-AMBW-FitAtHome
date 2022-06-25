@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-CollectionReference tbCatatan = FirebaseFirestore.instance.collection("tbHistory");
+CollectionReference tbCatatan = FirebaseFirestore.instance.collection("tbRiwayat");
 
 class DatabaseRiwayat {
   static Stream<QuerySnapshot> getData(String email) {

@@ -1,3 +1,4 @@
+import 'package:fitathome/pilihor.dart';
 import 'package:flutter/material.dart';
 //import 'package:carousel_slider/carousel_slider.dart';
 
@@ -36,7 +37,10 @@ class _HomePageState extends State<HomePage> {
           Container(
             padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
             child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PilihOlahraga()));
+                },
                 child: Text("START")),
           ),
         ],

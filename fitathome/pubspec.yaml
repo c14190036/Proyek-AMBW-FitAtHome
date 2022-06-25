@@ -38,6 +38,11 @@ dependencies:
   cloud_firestore: ^3.1.17
   firebase_auth: ^3.3.19
 
+  carousel_slider: ^4.1.1
+  youtube_player_flutter: ^8.1.0
+  flutter_countdown_timer: ^4.1.0
+  assets_audio_player: ^3.0.4+3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -61,6 +66,12 @@ flutter:
   uses-material-design: true
   assets:
     - assets/logofitathomev2.png
+    - assets/pushup.jpg
+    - assets/situp.jpg
+    - assets/backup.jpg
+    - assets/jumpingjack.jpg
+    - assets/plank.jpg
+    - assets/audio/ringing.mp3
 
   # To add assets to your application, add an assets section, like this:
   # assets:
