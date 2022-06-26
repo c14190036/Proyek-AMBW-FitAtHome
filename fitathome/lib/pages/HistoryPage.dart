@@ -32,6 +32,7 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xff00264d),
         title: Text("Riwayat"),
         centerTitle: true,
       ),
@@ -47,18 +48,49 @@ class _HistoryPageState extends State<HistoryPage> {
                     return ListView.separated(
                         itemBuilder: (context, index) {
                           DocumentSnapshot data = snapshot.data!.docs[index];
+                          String lvOlahraga = data['olahraga'];
                           String lvTanggal = data['tanggal'];
                           String lvKalori = data['kalori'];
                           String lvDurasi = data['durasi'];
-                          return ListTile(
-                              onTap: () {},
-                              onLongPress: () {},
-                              title: Text(lvTanggal),
-                              subtitle:
-                                  Text("$lvDurasi menit \n$lvKalori kalori"));
+                          String lvJam = data['jam'];
+                          return Card(
+                            color: Color(0xff002245),
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                color: Colors.lightBlueAccent
+                              ),
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                            ),
+                            child: Container(
+                              margin: EdgeInsets.all(8),
+                              child: ListTile(
+                                onTap: () {},
+                                onLongPress: () {},
+                                title: Padding(
+                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                  child: Text(lvOlahraga, style: TextStyle(color: Colors.white),),
+                                ),
+                                subtitle: Container(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("$lvDurasi menit", style: TextStyle(color: Colors.white)),
+                                      Text("$lvKalori kalori", style: TextStyle(color: Colors.white)),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Text("$lvTanggal\n$lvJam", textAlign: TextAlign.right, style: TextStyle(color: Colors.white))
+                                        ],
+                                      )
+                                    ],
+                                  )
+                                )
+                              ),
+                            ),
+                          ) ;
                         },
                         separatorBuilder: (context, index) =>
-                            SizedBox(height: 8),
+                          SizedBox(height: 8),
                         itemCount: snapshot.data!.docs.length);
                   } else {
                     return const Center(

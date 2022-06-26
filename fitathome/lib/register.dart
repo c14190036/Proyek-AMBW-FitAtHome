@@ -58,10 +58,11 @@ class _RegisterState extends State<Register> {
                 Container(
                   padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
                   child: TextFormField(
+                    style: TextStyle(color: Colors.white),
                     controller: namaController,
                     keyboardType: TextInputType.name,
                     decoration: const InputDecoration(
-                      prefixIcon: const Icon(Icons.person),
+                      prefixIcon: const Icon(Icons.person, color: Color(0xff6bc5c5),),
                       border: OutlineInputBorder(),
                       labelText: "Nama"
                     ),
@@ -75,9 +76,10 @@ class _RegisterState extends State<Register> {
                 Container(
                   padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
                   child: TextFormField(
+                    style: TextStyle(color: Colors.white),
                     controller: emailController,
                     decoration: const InputDecoration(
-                      prefixIcon: const Icon(Icons.email_outlined),
+                      prefixIcon: const Icon(Icons.email_outlined, color: Color(0xff6bc5c5),),
                       border: OutlineInputBorder(),
                       labelText: "Email"
                     ),
@@ -91,10 +93,11 @@ class _RegisterState extends State<Register> {
                 Container(
                   padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
                   child: TextFormField(
+                    style: TextStyle(color: Colors.white),
                     controller: passwordController,
                     obscureText: passwordConfirmVisibility,
                     decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.vpn_key),
+                      prefixIcon: const Icon(Icons.vpn_key, color: Color(0xff6bc5c5),),
                       border: OutlineInputBorder(),
                       labelText: "Password",
                       suffixIcon: IconButton(
@@ -102,7 +105,7 @@ class _RegisterState extends State<Register> {
                           passwordConfirmVisibility
                           ? Icons.visibility_off
                           : Icons.visibility,
-                          color: Theme.of(context).primaryColorDark,
+                          color: Color(0xff6bc5c5),
                         ),
                         onPressed: () {
                           setState(() {
@@ -124,11 +127,12 @@ class _RegisterState extends State<Register> {
                 Container(
                   padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
                   child: TextFormField(
+                    style: TextStyle(color: Colors.white),
                     controller: confirmpasswordController,
                     keyboardType: TextInputType.number,
                     obscureText: passwordVisibility,
                     decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.vpn_key),
+                      prefixIcon: const Icon(Icons.vpn_key, color: Color(0xff6bc5c5),),
                       border: OutlineInputBorder(),
                       labelText: "Confirm Password",
                       suffixIcon: IconButton(
@@ -136,7 +140,7 @@ class _RegisterState extends State<Register> {
                           passwordVisibility
                           ? Icons.visibility_off
                           : Icons.visibility,
-                          color: Theme.of(context).primaryColorDark,
+                          color: Color(0xff6bc5c5),
                         ),
                         onPressed: () {
                           setState(() {
@@ -188,9 +192,7 @@ class _RegisterState extends State<Register> {
     dcProfile profile = dcProfile();
 
     profile.email = user!.email;
-    profile.uid = user.uid;
     profile.nama = namaController.text;
-    profile.password = passwordController.text;
 
     await firestore
       .collection("tbUser")

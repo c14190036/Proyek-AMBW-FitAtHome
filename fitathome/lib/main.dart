@@ -15,6 +15,33 @@ Future<void> main() async {
   runApp(
     MaterialApp(
       title: "Fit At Home",
+      theme: ThemeData(
+      scaffoldBackgroundColor: Color(0xff001934),
+      textTheme: TextTheme(
+        headline1: TextStyle(color: Colors.white),
+        headline2: TextStyle(color: Colors.white),
+        bodyText2: TextStyle(color: Colors.white),
+      ),
+      iconTheme: IconThemeData(color: Colors.white),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          primary: Color(0xff6bc5c5),
+        ),
+        
+      ),
+      hintColor: Colors.white,
+      inputDecorationTheme: InputDecorationTheme(
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color(0xff6bc5c5))
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color(0xff6bc5c5))
+        ),
+        labelStyle: TextStyle(color: Color(0xff6bc5c5)),
+        
+      )
+
+    ),
       home: MyApp(),
     )
   );

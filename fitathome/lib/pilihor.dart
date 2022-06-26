@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitathome/dcOlahraga.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
@@ -28,18 +31,69 @@ class _PilihOlahragaState extends State<PilihOlahraga> {
   @override
   void initState() {
     super.initState();
+    initControllerBackUp();
+    initControllerJumpingJack();
+    initControllerPlank();
+    initControllerPushUp();
+    initControllerSitUp();
   }
 
-  /*@override
+  void initControllerBackUp() {
+    _controllerYoutubeBackup = YoutubePlayerController(
+      initialVideoId: "Di7TxwrWdho",
+      flags: YoutubePlayerFlags(
+        enableCaption: false,
+        autoPlay: false,
+      )
+    );
+  }
+  void initControllerJumpingJack() {
+    _controllerYoutubeJumpingJack = YoutubePlayerController(
+      initialVideoId: "nnC7FWBM8ZI",
+      flags: YoutubePlayerFlags(
+        enableCaption: false,
+        autoPlay: false,
+      )
+    );
+  }
+  void initControllerPlank() {
+    _controllerYoutubePlank = YoutubePlayerController(
+      initialVideoId: "hsfK3EXN5_M",
+      flags: YoutubePlayerFlags(
+        enableCaption: false,
+        autoPlay: false,
+      )
+    );
+  }
+  void initControllerPushUp() {
+    _controllerYoutubePushUp = YoutubePlayerController(
+      initialVideoId: "gchoWArHXv0",
+      flags: YoutubePlayerFlags(
+        enableCaption: false,
+        autoPlay: false,
+      )
+    );
+  }
+  void initControllerSitUp() {
+    _controllerYoutubeSitUp = YoutubePlayerController(
+      initialVideoId: "6eJVLbgxbBE",
+      flags: YoutubePlayerFlags(
+        enableCaption: false,
+        autoPlay: false,
+      )
+    );
+  }
+
+  @override
   void dispose() {
-    // _controllerYoutubeBackup.dispose();
-    // _controllerYoutubeJumpingJack.dispose();
-    // _controllerYoutubePlank.dispose();
-    // _controllerYoutubePushUp.dispose();
-    // _controllerYoutubeSitUp.dispose();
+    _controllerYoutubeBackup.dispose();
+    _controllerYoutubeJumpingJack.dispose();
+    _controllerYoutubePlank.dispose();
+    _controllerYoutubePushUp.dispose();
+    _controllerYoutubeSitUp.dispose();
 
     super.dispose();
-  }*/
+  }
 
   /*@override
   void deactivate() {
@@ -60,6 +114,8 @@ class _PilihOlahragaState extends State<PilihOlahraga> {
 
   String? _dropdownValue = "Pilih Olahraga";
 
+  String or = "";
+
   void callback (String? selectedValue) {
     if (selectedValue is String) {
       setState(() {
@@ -69,14 +125,19 @@ class _PilihOlahragaState extends State<PilihOlahraga> {
           selectedWidgetMarker = WidgetMarker.piliholahraga;
         } else if (selectedValue == "Back Up") {
           selectedWidgetMarker = WidgetMarker.backup;
+          or = "Back Up";
         } else if (selectedValue == "Jumping Jack") {
           selectedWidgetMarker = WidgetMarker.jumpingjack;
+          or = "Jumping Jack";
         }  else if (selectedValue == "Plank") {
           selectedWidgetMarker = WidgetMarker.plank;
+          or = "Plank";
         } else if (selectedValue == "Push Up") {
           selectedWidgetMarker = WidgetMarker.pushup;
+          or = "Push Up";
         } else if (selectedValue == "Sit Up") {
           selectedWidgetMarker = WidgetMarker.situp;
+          or = "Sit Up";
         }
       });
     }
@@ -85,70 +146,106 @@ class _PilihOlahragaState extends State<PilihOlahraga> {
   late Timer _timer;
   int _start = 10;
 
+  final _audio = AssetsAudioPlayer();
+  
+  String date = DateFormat.yMMMEd().format(DateTime.now());
+  String time = DateFormat.jm().format(DateTime.now());
+    
+  void startTimer() {
+    const oneSecond = const Duration(seconds: 1);
+    var firestore = FirebaseFirestore.instance;
+    var user = auth.currentUser;
+    var random = Random();
+    int rand = random.nextInt(100) + 10;
+
+    _timer = Timer.periodic(
+        oneSecond,
+        (Timer timer) {
+          if (_start == 0) {
+            setState(() async {
+              _audio.open(
+                Audio("assets/audio/ringing.mp3")
+              );
+              _audio.play();
+              timer.cancel();
+              dcOlahraga addData = dcOlahraga();
+              addData.email = user!.email;
+              addData.durasi = 10.toString();
+              addData.kalori = rand.toString();
+              addData.tanggal = date;
+              addData.jam = time;
+              addData.olahraga = or;
+
+              await firestore.collection("tbHistory").doc().set(addData.toJson());
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Data olahraga kamu berhasil ditambah"),
+              ));
+
+              _start = 10;
+            });
+          } else {
+            setState(() {
+              _start--;
+            });
+          }
+        }
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
 
-    final _audio = AssetsAudioPlayer();
-    
-    void startTimer() {
-      const oneSecond = const Duration(seconds: 1);
-      _timer = Timer.periodic(
-          oneSecond,
-          (Timer timer) {
-            if (_start == 0) {
-              setState(() {
-                _audio.open(
-                  Audio("assets/audio/ringing.mp3")
-                );
-                _audio.play();
-                timer.cancel();
-                _start = 10;
-              });
-            } else {
-              setState(() {
-                _start--;
-              });
-            }
-          }
-        );
-    }
-
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xff00264d),
         title: Text("Pilih Olahraga"),
       ),
 
       body: Column(
         children: <Widget> [
           Container(
-            padding: EdgeInsets.all(16),
+            color: Color(0xff6bc5c5),
+            margin: EdgeInsets.all(16),
             width: double.infinity,
-            child: DropdownButton(
-              isExpanded: true,
-              items: const [
-                DropdownMenuItem(child: Text("Pilih Olahraga"), value: "Pilih Olahraga",),
-                DropdownMenuItem(child: Text("Back Up"), value: "Back Up",),
-                DropdownMenuItem(child: Text("Jumping Jack"), value: "Jumping Jack",),
-                DropdownMenuItem(child: Text("Plank"), value: "Plank",),
-                DropdownMenuItem(child: Text("Push Up"), value: "Push Up",),
-                DropdownMenuItem(child: Text("Sit Up"), value: "Sit Up",)
-              ],
-              value: _dropdownValue,
-              onChanged: callback
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                border: Border.all(),
+              ),
+              child: DropdownButton(
+                style: TextStyle(color: Colors.black),
+                isExpanded: true,
+                items: const [
+                  DropdownMenuItem(child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text("Pilih Olahraga"),
+                  ), value: "Pilih Olahraga",),
+                  DropdownMenuItem(child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text("Back Up"),
+                  ), value: "Back Up",),
+                  DropdownMenuItem(child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text("Jumping Jack"),
+                  ), value: "Jumping Jack",),
+                  DropdownMenuItem(child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text("Plank"),
+                  ), value: "Plank",),
+                  DropdownMenuItem(child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text("Push Up"),
+                  ), value: "Push Up",),
+                  DropdownMenuItem(child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text("Sit Up"),
+                  ), value: "Sit Up",)
+                ],
+                value: _dropdownValue,
+                onChanged: callback
+              ),
             )
           ),
           customContainer(),
-          Container(
-            child: ElevatedButton(
-              onPressed: () {
-                startTimer();
-              },
-              child: Text("Start Timer"),
-            )
-          ),
-          Container(
-            child: Text("${_start} detik"),
-          )
         ],
       )
     );
@@ -186,21 +283,13 @@ class _PilihOlahragaState extends State<PilihOlahraga> {
   }
   
   Widget backupContainer() {
-    checker = 1;
-    
-    //_controllerYoutubeBackup
-    _controllerYoutubeBackup = YoutubePlayerController(
-        initialVideoId: "hnTuuGU50cs",
-        flags: YoutubePlayerFlags(
-          enableCaption: false,
-          autoPlay: false,
-        )
-      );
-
     return Column(
       children: [
-        Container(child: Text("Back Up Ini")),
         Container(
+          child: Text("")
+        ),
+        Container(
+          padding: EdgeInsets.all(16),
           child: YoutubePlayerBuilder(
             player: YoutubePlayer(
               controller: _controllerYoutubeBackup,
@@ -211,23 +300,34 @@ class _PilihOlahragaState extends State<PilihOlahraga> {
             }
           ),
         ),
+        Container(
+          height: 200,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                child: Text("${_start} detik", style: TextStyle(fontSize: 22),),
+              ),
+              Container(
+                child: ElevatedButton(
+                  onPressed: () {
+                    startTimer();
+                  },
+                  child: Text("Start Timer", style: TextStyle(color: Colors.black)),
+                )
+              ),
+            ]
+          ),
+        )
       ],
     );
   }
 
   Widget jumpingjackContainer() {
-    
-    _controllerYoutubeJumpingJack = YoutubePlayerController(
-        initialVideoId: "kRdnkN_P7WU",
-        flags: YoutubePlayerFlags(
-          enableCaption: false,
-          autoPlay: false,
-        )
-      );
-
     return Column(
       children: [
         Container(
+          padding: EdgeInsets.all(16),
           child: YoutubePlayerBuilder(
             player: YoutubePlayer(
               controller: _controllerYoutubeJumpingJack,
@@ -238,31 +338,41 @@ class _PilihOlahragaState extends State<PilihOlahraga> {
             }
           ),
         ),
+        Container(
+          height: 200,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                child: Text("${_start} detik", style: TextStyle(fontSize: 22),),
+              ),
+              Container(
+                child: ElevatedButton(
+                  onPressed: () {
+                    startTimer();
+                  },
+                  child: Text("Start Timer", style: TextStyle(color: Colors.black)),
+                )
+              ),
+            ]
+          ),
+        )
       ],
     );
   }
 
   Widget plankContainer() {
-    checker = 3;
-    
-    //_controllerYoutubePlank
-    _controllerYoutubePlank = YoutubePlayerController(
-        initialVideoId: "hnTuuGU50cs",
-        flags: YoutubePlayerFlags(
-          enableCaption: false,
-          autoPlay: false,
-        )
-      );
     return Column(
       children: [
         Container(
           child: Row(
             children: [
-              Text("Ini Plank")
+              Text("")
             ],
           ),
         ),
         Container(
+          padding: EdgeInsets.all(16),
           child: YoutubePlayerBuilder(
             player: YoutubePlayer(
               controller: _controllerYoutubePlank,
@@ -273,25 +383,34 @@ class _PilihOlahragaState extends State<PilihOlahraga> {
             }
           ),
         ),
+        Container(
+          height: 200,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                child: Text("${_start} detik", style: TextStyle(fontSize: 22),),
+              ),
+              Container(
+                child: ElevatedButton(
+                  onPressed: () {
+                    startTimer();
+                  },
+                  child: Text("Start Timer", style: TextStyle(color: Colors.black)),
+                )
+              ),
+            ]
+          ),
+        )
       ],
     );
   }
 
   Widget pushupContainer() {
-    checker = 4;
-    
-
-    //_controllerYoutubePushUp
-    _controllerYoutubePushUp = YoutubePlayerController(
-        initialVideoId: "kRdnkN_P7WU",
-        flags: YoutubePlayerFlags(
-          enableCaption: false,
-          autoPlay: false,
-        )
-      );
     return Column(
       children: [
         Container(
+          padding: EdgeInsets.all(16),
           child: YoutubePlayerBuilder(
             player: YoutubePlayer(
               controller: _controllerYoutubePushUp,
@@ -302,49 +421,64 @@ class _PilihOlahragaState extends State<PilihOlahraga> {
             }
           ),
         ),
+        Container(
+          height: 200,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                child: Text("${_start} detik", style: TextStyle(fontSize: 22),),
+              ),
+              Container(
+                child: ElevatedButton(
+                  onPressed: () {
+                    startTimer();
+                  },
+                  child: Text("Start Timer", style: TextStyle(color: Colors.black)),
+                )
+              ),
+            ]
+          ),
+        )
       ],
     );
   }
 
   Widget situpContainer() {
-    checker = 5;
-    
-    //_controllerYoutubeSitUp
-    _controllerYoutubeSitUp = YoutubePlayerController(
-        initialVideoId: "hnTuuGU50cs",
-        flags: YoutubePlayerFlags(
-          enableCaption: false,
-          autoPlay: false,
+    return Container(
+      padding: EdgeInsets.all(16),
+      child: Column(
+        children: [
+          YoutubePlayerBuilder(
+            player: YoutubePlayer(
+              controller: _controllerYoutubeSitUp,
+              showVideoProgressIndicator: true,
+            ),
+            builder: (context, player) {
+              return player;
+            }
+          ),
+          Container(
+          height: 200,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                child: Text("${_start} detik", style: TextStyle(fontSize: 22),),
+              ),
+              Container(
+                child: ElevatedButton(
+                  onPressed: () {
+                    startTimer();
+                  },
+                  child: Text("Start Timer", style: TextStyle(color: Colors.black)),
+                )
+              ),
+            ]
+          ),
         )
-      );
-    return YoutubePlayerBuilder(
-      player: YoutubePlayer(
-        controller: _controllerYoutubeSitUp,
-        showVideoProgressIndicator: true,
+        ],
       ),
-      builder: (context, player) {
-        return player;
-      }
     );
-  }
-}
-
-class Model {
-  String nama;
-  String gambar;
-  bool check;
-
-  Model(this.nama, this.gambar, this.check);
-
-  String getNama() {
-    return nama;
-  }
-
-  String getGambar() {
-    return gambar;
-  }
-
-  bool isChecked() {
-    return check;
   }
 }

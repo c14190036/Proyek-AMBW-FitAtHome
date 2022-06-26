@@ -25,6 +25,9 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(0xff00264d),
+        selectedItemColor: Color(0xff79dddd),
+        unselectedItemColor: Colors.white,
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
         items: const [

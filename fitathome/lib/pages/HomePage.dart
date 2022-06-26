@@ -14,6 +14,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xff00264d),
         title: Text("Home"),
         centerTitle: true,
       ),
@@ -21,8 +22,9 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
+              height: 200, width: 200,
               padding: EdgeInsets.all(16),
-              child: Image.asset('assets/logofitathomev2.png', height: 100)),
+              child: Image.asset('assets/logo_v3.png')),
           Container(
             padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
             child: Text(
@@ -37,11 +39,14 @@ class _HomePageState extends State<HomePage> {
           Container(
             padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xff6bc5c5)
+              ),
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => PilihOlahraga()));
                 },
-                child: Text("START")),
+                child: Text("START", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16))),
           ),
         ],
       ),
