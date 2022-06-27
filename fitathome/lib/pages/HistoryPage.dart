@@ -56,41 +56,50 @@ class _HistoryPageState extends State<HistoryPage> {
                           return Card(
                             color: Color(0xff002245),
                             shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                color: Colors.lightBlueAccent
-                              ),
-                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                              side: BorderSide(color: Colors.lightBlueAccent),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
                             ),
                             child: Container(
                               margin: EdgeInsets.all(8),
                               child: ListTile(
-                                onTap: () {},
-                                onLongPress: () {},
-                                title: Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Text(lvOlahraga, style: TextStyle(color: Colors.white),),
-                                ),
-                                subtitle: Container(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                  onTap: () {},
+                                  onLongPress: () {},
+                                  title: Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: Text(
+                                      lvOlahraga,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                  subtitle: Container(
+                                      child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text("$lvDurasi menit", style: TextStyle(color: Colors.white)),
-                                      Text("$lvKalori kalori", style: TextStyle(color: Colors.white)),
+                                      Text("$lvDurasi menit",
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                      Text("$lvKalori kalori",
+                                          style:
+                                              TextStyle(color: Colors.white)),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
                                         children: [
-                                          Text("$lvTanggal\n$lvJam", textAlign: TextAlign.right, style: TextStyle(color: Colors.white))
+                                          Text("$lvTanggal\n$lvJam",
+                                              textAlign: TextAlign.right,
+                                              style: TextStyle(
+                                                  color: Colors.white))
                                         ],
                                       )
                                     ],
-                                  )
-                                )
-                              ),
+                                  ))),
                             ),
-                          ) ;
+                          );
                         },
                         separatorBuilder: (context, index) =>
-                          SizedBox(height: 8),
+                            SizedBox(height: 8),
                         itemCount: snapshot.data!.docs.length);
                   } else {
                     return const Center(
