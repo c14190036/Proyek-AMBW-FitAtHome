@@ -21,4 +21,6 @@ cara kerja: kerja bersama-sama menggunakan discord
 
 link github : https://github.com/c14190036/Proyek-AMBW-FitAtHome
 
-progress kerja: belum ada progress
+progress kerja: Sudah selesai
+
+Link Video Demo : https://drive.google.com/file/d/1yg8m0wTF2T2Lq1fsqlk3lZPUsjmHHwTK/view?usp=sharing
