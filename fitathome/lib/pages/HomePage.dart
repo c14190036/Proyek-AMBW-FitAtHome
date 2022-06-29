@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
     'https://www.alodokter.com/ini-dia-empat-manfaat-push-up',
     'https://www.alodokter.com/perut-terlihat-kencang-berkat-manfaat-sit-up',
     'https://www.lemonilo.com/blog/ketahuilah-5-manfaat-back-up-yang-baik-untuk-tubuh',
-    'https://www.lemonilo.com/blog/ketahuilah-5-manfaat-back-up-yang-baik-untuk-tubuh',
+    'https://www.kompas.com/sports/read/2022/02/17/22300078/jumping-jack--cara-melakukan-dan-manfaat?page=all',
     'https://www.alodokter.com/memahami-gerakan-dan-manfaat-plank'
   ];
 
